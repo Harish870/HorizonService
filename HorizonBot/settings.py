@@ -82,7 +82,7 @@ WSGI_APPLICATION = 'HorizonBot.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'HorizonPPD',
+        'NAME': 'horizonppd',
         'USER': 'postgres',
         'PASSWORD': 'root',
         'HOST': 'localhost',
