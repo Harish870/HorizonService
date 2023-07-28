@@ -84,7 +84,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'Horizon-ppd',
         'USER': 'postgres',
-        'PASSWORD': 'Raman890@',
+        'PASSWORD': 'root',
         'HOST': 'localhost',
         'PORT': 5432
     }
