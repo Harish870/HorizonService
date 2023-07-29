@@ -39,7 +39,7 @@ MIDDLEWARE = [
 SECRET_KEY = 'django-insecure-aph58$a$c(%sprk9vk1_k8b#8l(^t7yq%v1_8lmevg-hm4oe^#'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
