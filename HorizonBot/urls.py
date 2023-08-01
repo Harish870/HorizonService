@@ -40,24 +40,28 @@ class SkypeListener(SkypeEventLoop):
     username = 'taskBot3.0@gmail.com'
     password = 'taskBot@3'
     token_file = '.tokens-app'
+    skype_obj = Skype(username, password, token_file)
     "Listen to a channel continuously"
     def __init__(self):
         super(SkypeListener, self).__init__(self.username, self.password, self.token_file)
  
     def scheduleSender(self, chat_Id, msg):
-        skype_obj = Skype(self.username, self.password, self.token_file)
-        channel = skype_obj.chats.chat(chat_Id).sendMsg(msg)
+        self.skype_obj.chats.chat(chat_Id).sendMsg(msg)
 
     def onEvent(self, event):
         if isinstance(event, SkypeNewMessageEvent):
             pattern = r'set reminder msg="([^"]+)",\s*hour="(\d+)",\s*min="(\d+)"\s+and\s+repeatition_type="([^"]+)"'
             match = re.search(pattern, event.msg.content.replace('&quot;', '"'), re.IGNORECASE)
+            message = {"user_id":event.msg.userId,
+                    "chat_id":event.msg.chatId,
+                    "msg":event.msg.content}
+            print(message)
+            print(match, "match")
             if('8:live:.cid.fb5d66f4c0a4f1c2' in event.msg.content):
-                skype_obj = Skype(self.username, self.password, self.token_file)
                 if(any(word in event.msg.content.lower() for word in ["hi", "hello", "hey"])):
-                    channel = skype_obj.chats.chat(event.msg.chatId).sendMsg('Hi, This is task Bot')
+                    self.scheduleSender(event.msg.chatId, "Hi, this is Task bot")
                 elif('what can you do' in event.msg.content.lower()) :
-                    channel = skype_obj.chats.chat(event.msg.chatId).sendMsg('I can set reminders for you - just write "set reminder msg="Example Message", hour="", min="" and repeation_type="repeated/once"')
+                    self.scheduleSender(event.msg.chatId,'I can set reminders for you - just write "set reminder msg="Example Message", hour="", min="" and repeatition_type="repeated/once"' )
                 elif(match):
                     example_message = match.group(1)
                     hour = int(match.group(2))
@@ -74,7 +78,9 @@ class SkypeListener(SkypeEventLoop):
                             "min": int(minute)
                             }
                         )
-                    skype_obj.chats.chat(event.msg.chatId).sendMsg(f"example_message={example_message}, hour={hour}, minute={minute}, repetion_type={repetition_type}")
+                    self.scheduleSender(event.msg.chatId, f"example_message={example_message}, hour={hour}, minute={minute}, repetion_type={repetition_type}" )
+                else:
+                    self.scheduleSender(event.msg.chatId, "I don't understand" )
 
 skpyListner = SkypeListener()
 
